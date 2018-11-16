@@ -5,11 +5,17 @@ cmds["/bin/busybox"] = function (conn, args)
 end
 
 cmds["wget"] = function(conn, args)
-  conn:write_line([[
-wget: missing URL
-Usage: wget [OPTION]... [URL]...
+  if not args[2] then
+    conn:write_line([[
+      wget: missing URL
+      Usage: wget [OPTION]... [URL]...
 
-Try `wget --help' for more options.]]) 
+      Try `wget --help' for more options.]])
+    return
+  end
+
+  print("WGET")
+  conn:log_event({ action="download", url=args[2] })
 end
 
 cmds["enable"] = function(conn, args)
